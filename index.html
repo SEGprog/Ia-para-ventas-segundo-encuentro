@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Del dolor a la venta · 25/11</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: cálido y práctico, el cuaderno de trabajo de un taller para comerciantes.
+   IDEA: la libreta del segundo encuentro: una pestaña por tema de la presentación, con la ruleta como juego.
+   PICTURE: la ruleta de prompts y las tarjetas de respuesta que van llenando la sala.
+   COLOUR and TYPE: navy Impulsa dominante, crema, teal y naranja de acento; Montserrat 800 + Inter.
+   LAYOUT: cabecera navy con pestañas, una columna en el celular, dos en pantalla grande. */
+:root{color-scheme:light dark;
+--bg:light-dark(#f8f6ef,#0e1a2c);--ink:light-dark(#12243e,#eef1f4);--soft:light-dark(#5f6f82,#a9b6c4);
+--card:light-dark(#ffffff,#16263d);--line:light-dark(#e3e6ea,#26394f);--tint:light-dark(#eef7f6,#12313a);
+--navy:#12243e;--teal:#15958f;--mint:#2bb2a6;--orange:#efa735;--coral:#df704f;--purple:#795c9e}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
+header{background:var(--navy);color:#fff;padding:22px max(5vw,16px) 0}
+.eyebrow{font:700 13px Montserrat,sans-serif;color:var(--mint);margin:0 0 6px}
+h1{font:800 clamp(28px,5vw,44px)/1.05 Montserrat,sans-serif;margin:0 0 6px;text-wrap:balance}
+header p.lead{margin:0 0 14px;color:#d6dde6;max-width:62ch}
+header a{color:var(--orange)}
+nav{display:flex;gap:4px;overflow-x:auto}
+nav a{flex:none;color:#fff;text-decoration:none;padding:12px 14px;border-radius:12px 12px 0 0;font-weight:600;min-height:44px;font-size:15px}
+nav a[aria-current=true]{background:var(--bg);color:var(--teal)}
+main{max-width:1080px;margin:0 auto;padding:clamp(20px,4vw,36px) max(4vw,16px) 70px}
+section.p{display:none}section.p.on{display:block}
+h2{font:800 clamp(24px,3.6vw,32px)/1.1 Montserrat,sans-serif;margin:0 0 6px}
+h3{font:700 19px/1.2 Montserrat,sans-serif;margin:0 0 10px}
+.sub{color:var(--soft);margin:0 0 20px;max-width:66ch}
+.tag{font:700 13px Montserrat,sans-serif;color:var(--teal);margin:0 0 6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:16px}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+label{display:block;font-weight:600;margin:12px 0 5px;font-size:15px}
+input,select,textarea{width:100%;font:16px Inter,sans-serif;padding:11px 12px;border-radius:11px;border:1px solid var(--line);background:var(--bg);color:var(--ink);min-height:44px}
+textarea{min-height:84px;resize:vertical}
+button,.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 15px Montserrat,sans-serif;min-height:46px;padding:10px 20px;border-radius:12px;border:0;background:var(--navy);color:#fff;cursor:pointer;text-decoration:none}
+:root:not([data-theme=light]) button.dark-ok{background:var(--teal)}
+button.alt{background:transparent;color:var(--teal);border:2px solid var(--teal)}
+button.go{background:var(--teal)}
+.btn.wa{background:#1f9d55}
+button:disabled{opacity:.55;cursor:wait}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,.chip:focus-within{outline:3px solid var(--orange);outline-offset:2px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;border:2px solid var(--line);cursor:pointer;min-height:44px;font-weight:500;user-select:none;font-size:15px}
+.chip input{width:auto;min-height:0;accent-color:var(--teal);margin:0}
+.chip:has(input:checked){border-color:var(--teal);background:var(--tint)}
+.prompt{white-space:pre-wrap;background:var(--tint);border-radius:12px;padding:14px;font-size:15px;margin:10px 0}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
+.note{font-size:13px;color:var(--soft)}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.three input{text-align:right}
+.score{font:800 30px Montserrat,sans-serif;color:var(--teal)}
+.plan{width:100%;border-collapse:collapse}
+.plan th{font:700 13px Montserrat,sans-serif;text-align:left;color:var(--soft);padding:6px 4px}
+.plan td{padding:4px}
+.plan input{min-height:42px;font-size:15px}
+.next{margin-top:8px}
+.chan{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:6px}
+.col{border:1px solid var(--line);border-radius:16px;padding:16px;background:var(--bg)}
+.col h3{display:flex;align-items:center;gap:10px}
+.dot{width:14px;height:14px;border-radius:50%;flex:none}
+.col dl{margin:0}.col dt{font:700 12px Montserrat,sans-serif;color:var(--soft);margin-top:10px}.col dd{margin:2px 0 0;font-size:15px}
+.col .mine{border-top:1px dashed var(--line);margin-top:14px;padding-top:4px}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:6px 0 4px}
+.flow span.s{padding:8px 12px;border-radius:10px;color:#fff;font-weight:600;font-size:14px}
+.flow span.a{color:var(--soft);font-weight:700}
+@media(max-width:860px){.chan{grid-template-columns:minmax(0,1fr)}}
+/* ruleta */
+.lab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start}
+.wheelbox{position:relative;max-width:480px;margin:0 auto;width:100%;text-align:center}
+canvas{width:100%;height:auto;display:block}
+.pointer{position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:17px solid transparent;border-right:17px solid transparent;border-top:30px solid var(--ink)}
+.challenge{background:light-dark(#fff8e9,#3a2e14);border-radius:10px;padding:12px 14px;margin:12px 0}
+.k2{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+/* sala */
+.bars .b{display:grid;grid-template-columns:minmax(0,11em) minmax(0,1fr) 2.5em;gap:10px;align-items:center;margin:8px 0;font-size:15px}
+.bars .t{height:14px;border-radius:7px;background:var(--line);overflow:hidden}
+.bars .f{height:100%;background:var(--teal);border-radius:7px}
+.bars .n{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+.wall{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}
+.post{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+.post b{font-family:Montserrat,sans-serif}
+.post p{margin:6px 0 0;font-size:15px}
+.status{padding:12px 14px;border-radius:12px;background:var(--tint);margin:12px 0;font-size:15px}
+.big{font:800 44px Montserrat,sans-serif;color:var(--teal);line-height:1}
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90vw}
+.toast.show{opacity:1}
+@media(max-width:760px){.lab{grid-template-columns:minmax(0,1fr)}.k2{grid-template-columns:1fr}.bars .b{grid-template-columns:minmax(0,8em) minmax(0,1fr) 2em}}
+@media(prefers-reduced-motion:reduce){.toast{transition:none}}
+</style>
+</head>
+<body>
+<header>
+<p class="eyebrow">IMPULSA DIGITAL STUDIO · SEGUNDO ENCUENTRO</p>
+<h1>Del dolor a la venta: compartir, ajustar y avanzar</h1>
+<p class="lead">Miércoles 25 de noviembre · 20:30 hs · Cámara Económica de Tres Arroyos. Seguí el encuentro tema por tema y enviá tus respuestas. <a href="https://segprog.github.io/Kit-ventas">Kit de ventas con IA</a></p>
+<nav id="nav">
+<a href="#inicio">Inicio</a>
+<a href="#compartir">1 · Compartir</a>
+<a href="#vender">2 · Vender</a>
+<a href="#fiestas">3 · Fiestas</a>
+<a href="#ruleta">Ruleta</a>
+<a href="#automatizar">4 · Automatizar</a>
+<a href="#plan">5 · Plan 2027</a>
+<a href="#enviar">Enviar</a>
+</nav>
+</header>
+
+<main>
+<!-- INICIO -->
+<section class="p" id="p-inicio">
+<h2>Antes de empezar</h2>
+<p class="sub">Estos datos aparecen en tus respuestas y completan los pedidos para la IA. Se guardan en tu celular.</p>
+<div class="grid">
+<div class="card">
+<label for="negocio">Nombre de tu negocio</label>
+<input id="negocio" data-k="negocio" placeholder="Ej.: Panadería Las Delicias">
+<label for="rubro">Rubro</label>
+<input id="rubro" data-k="rubro" placeholder="Ej.: panadería artesanal">
+<label for="cliente">Tu cliente ideal</label>
+<input id="cliente" data-k="cliente" placeholder="Ej.: familias de la zona">
+</div>
+<div class="card">
+<h3>Lo que construimos el 12 de noviembre</h3>
+<div class="chips" data-multi="kit"></div>
+<p class="note">Marcá lo que tenés del kit. Si lo perdiste, generalo de nuevo:</p>
+<div class="row"><a class="btn go" href="https://segprog.github.io/Kit-ventas" style="background:var(--teal)">Abrir el Kit de ventas con IA</a><span class="note">segprog.github.io/Kit-ventas</span></div>
+</div>
+</div>
+<div class="status">Recordá: en respuestas y capturas, sin nombres, teléfonos ni direcciones de tus clientes.</div>
+<button class="next go" data-go="compartir">Empezar con el tema 1</button>
+</section>
+
+<!-- TEMA 1 -->
+<section class="p" id="p-compartir">
+<p class="tag">TEMA 1 · 00–20 MIN</p>
+<h2>¿Qué pasó con tu primera acción?</h2>
+<p class="sub">No hay resultados malos: hay información para decidir mejor.</p>
+<div class="grid">
+<div class="card">
+<h3>Ronda de resultados</h3>
+<label for="probe">¿Qué probaste?</label>
+<select id="probe" data-k="probe"><option value="">Elegí una opción</option><option>Un anuncio</option><option>Un posteo</option><option>Un mensaje de WhatsApp</option><option>Una promo</option><option>Todavía nada</option></select>
+<label for="paso">¿Qué pasó? Solo datos reales</label>
+<textarea id="paso" data-k="paso" placeholder="Ej.: 12 consultas, 3 ventas. También vale “no pasó nada”."></textarea>
+<label>Tu mini embudo</label>
+<div class="three">
+<div><input id="alc" data-k="alc" inputmode="numeric" placeholder="0"><span class="note">Te vieron</span></div>
+<div><input id="con" data-k="con" inputmode="numeric" placeholder="0"><span class="note">Te escribieron</span></div>
+<div><input id="ven" data-k="ven" inputmode="numeric" placeholder="0"><span class="note">Compraron</span></div>
+</div>
+<p class="note" id="embudo">Completá los números para ver cuántos te escriben de cada 100 que te ven.</p>
+<label>¿Qué cambiarías?</label>
+<div class="chips" data-multi="cambiar"></div>
+</div>
+<div class="card">
+<h3>Detector: ¿qué le faltó a tu pieza?</h3>
+<div class="chips" data-multi="detector"></div>
+<p><span class="score" id="detScore">0/5</span> <span class="note" id="detMsg"></span></p>
+<h3 style="margin-top:16px">Mejorá con IA lo que no funcionó</h3>
+<label for="pieza">Pegá el texto que publicaste</label>
+<textarea id="pieza" data-k="pieza" placeholder="El texto de tu anuncio, posteo o mensaje"></textarea>
+<label for="objetivo">¿Cuál era tu objetivo?</label>
+<input id="objetivo" data-k="objetivo" placeholder="Ej.: conseguir pedidos por WhatsApp">
+<div class="prompt" id="pAjustar"></div>
+<div class="row"><button class="alt" data-copy="pAjustar">Copiar pedido</button><a class="note" href="https://chatgpt.com">Abrir ChatGPT</a><a class="note" href="https://gemini.google.com">Abrir Gemini</a></div>
+</div>
+</div>
+<button class="next go" data-go="vender">Seguir con el tema 2</button>
+</section>
+
+<!-- TEMA 2 -->
+<section class="p" id="p-vender">
+<p class="tag">TEMA 2 · 20–50 MIN</p>
+<h2>Nuevas formas de vender</h2>
+<p class="sub">Tres caminos que se complementan: Meta Ads trae gente nueva, WhatsApp Business convierte el chat en mostrador y los afiliados hacen que otros vendan por vos.</p>
+<div class="grid">
+<div class="card">
+<h3>Afiliados y referidos</h3>
+<label for="afiliado">¿Quién en tu entorno ya te recomienda o podría vender por vos?</label>
+<textarea id="afiliado" data-k="afiliado" placeholder="Ej.: una organizadora de eventos, un cliente fiel, el comercio de al lado"></textarea>
+<label for="beneficio">¿Qué le darías por cada venta?</label>
+<input id="beneficio" data-k="beneficio" placeholder="Ej.: 10% de comisión o crédito para comprar">
+<div class="prompt" id="pAfiliados"></div>
+<div class="row"><button class="alt" data-copy="pAfiliados">Copiar pedido</button></div>
+</div>
+<div class="card">
+<h3>WhatsApp como canal de venta</h3>
+<label>¿Qué WhatsApp usás hoy?</label>
+<div class="chips" data-one="wa"></div>
+<label>¿En qué paso se te cae más gente?</label>
+<div class="chips" data-multi="caida"></div>
+<label>¿Qué ya tenés armado?</label>
+<div class="chips" data-multi="waTiene"></div>
+</div>
+<div class="card">
+<h3>Ventas con Meta Ads (Instagram y Facebook)</h3>
+<p class="note">La pauta amplifica: si la oferta no es clara, solo acelera el desorden. El anuncio empieza antes de tocar “Promocionar”.</p>
+<label>¿Por qué camino pautás?</label>
+<div class="chips" data-one="metaCamino"></div>
+<label>Antes de invertir, ¿qué tenés listo?</label>
+<div class="chips" data-multi="metaTiene"></div>
+<label for="metaPres">Presupuesto para probar</label>
+<input id="metaPres" data-k="metaPres" placeholder="Ej.: lo que pueda invertir en 5 días">
+<div class="prompt" id="pMeta"></div>
+<div class="row"><button class="alt" data-copy="pMeta">Copiar pedido</button><a class="note" href="https://www.facebook.com/ads/library">Biblioteca de anuncios de Meta</a></div>
+</div>
+</div>
+
+<div class="card">
+<h3>Plantilla: todas tus posibilidades de venta</h3>
+<p class="note">Compará los tres canales y completá tu fila de abajo en cada uno. Al final, numerá tus prioridades del 1 al 3.</p>
+<div class="flow" aria-label="Cómo se combinan los tres canales"><span class="s" style="background:#795c9e">Meta Ads atrae</span><span class="a">→</span><span class="s" style="background:#15958f">WhatsApp Business convierte</span><span class="a">→</span><span class="s" style="background:#df704f">Afiliados y referidos multiplican</span></div>
+<div class="chan" id="chan"></div>
+<p class="note" id="chanMsg"></p>
+</div>
+<button class="next go" data-go="fiestas">Seguir con el tema 3</button>
+</section>
+
+<!-- TEMA 3 -->
+<section class="p" id="p-fiestas">
+<p class="tag">TEMA 3 · 50–80 MIN</p>
+<h2>Campaña de fiestas: tu kit, versión diciembre</h2>
+<p class="sub">Principios de diciembre lanzás, a mediados llega el aguinaldo, el 24 y el 31 cierran los pedidos y en enero avisás qué cambia.</p>
+<div class="grid">
+<div class="card">
+<h3>Semáforo: antes de lanzar, ¿qué tenés definido?</h3>
+<div class="chips" data-multi="fiestas"></div>
+<p><span class="score" id="semScore">0/6</span> <span class="note" id="semMsg"></span></p>
+<label for="combo">Tu combo o regalo de fiestas</label>
+<input id="combo" data-k="combo" placeholder="Ej.: caja dulce para regalar con tarjeta">
+<label for="limite">Fecha límite de pedidos</label>
+<input id="limite" data-k="limite" placeholder="Ej.: 22 de diciembre">
+</div>
+<div class="card">
+<h3>Laboratorio: pedido para la IA</h3>
+<p class="note">Abrí la conversación donde armaste tu kit, pegá este pedido y completá los corchetes. Revisá precios, stock y fechas antes de publicar.</p>
+<div class="prompt" id="pFiestas"></div>
+<div class="row"><button class="alt" data-copy="pFiestas">Copiar pedido</button><a class="note" href="https://chatgpt.com">Abrir ChatGPT</a></div>
+</div>
+</div>
+<button class="next go" data-go="ruleta">Ir a la ruleta</button>
+</section>
+
+<!-- RULETA -->
+<section class="p" id="p-ruleta">
+<p class="tag">JUEGO · RULETA DE PROMPTS</p>
+<h2>Girá, completá tu kit y salí con una idea de anuncio</h2>
+<p class="sub">Usá la consigna como punto de partida para tu campaña de fiestas.</p>
+<div class="lab">
+<div class="wheelbox"><div class="pointer" aria-hidden="true"></div><canvas id="wheel" width="700" height="700" aria-label="Ruleta de 11 desafíos"></canvas><div class="row" style="justify-content:center"><button id="spin" class="go">Girar la ruleta</button></div></div>
+<div class="card">
+<h3 id="picked">Tu desafío te espera</h3>
+<div class="challenge" id="task">La ruleta elegirá una consigna para tu próxima pieza de comunicación.</div>
+<div class="k2">
+<div><label for="rProd">Producto o servicio</label><input id="rProd" data-k="rProd" placeholder="Ej.: combo de desayuno"></div>
+<div><label for="rFecha">Fecha o motivo</label><input id="rFecha" data-k="rFecha" placeholder="Ej.: Navidad"></div>
+<div><label for="rBen">Beneficio o diferencial</label><input id="rBen" data-k="rBen" placeholder="Ej.: fresco y artesanal"></div>
+<div><label for="rOferta">Precio u oferta (opcional)</label><input id="rOferta" data-k="rOferta" placeholder="Ej.: 10% hasta el viernes"></div>
+</div>
+<label for="rCta">¿Qué querés que haga la persona?</label><input id="rCta" data-k="rCta" placeholder="Ej.: Escribinos por WhatsApp">
+<div class="row"><button id="make">Armar mi prompt</button></div>
+<p class="note" id="rMsg" aria-live="polite"></p>
+<div class="prompt" id="pRuleta" hidden></div>
+<div class="row" id="rCopy" hidden><button class="alt" data-copy="pRuleta">Copiar prompt</button><a class="note" href="https://chatgpt.com">Abrir ChatGPT</a><a class="note" href="https://www.canva.com">Abrir Canva</a></div>
+</div>
+</div>
+</section>
+
+<!-- TEMA 4 -->
+<section class="p" id="p-automatizar">
+<p class="tag">TEMA 4 · 80–100 MIN</p>
+<h2>Lo repetitivo, que lo haga la herramienta. Lo humano, vos</h2>
+<p class="sub">Las cuatro primeras están en WhatsApp Business, en Herramientas para la empresa.</p>
+<div class="grid">
+<div class="card">
+<h3>¿Cuáles activaste hoy?</h3>
+<div class="chips" data-multi="auto"></div>
+<p class="note">Lo que no se automatiza: escuchar, asesorar y agradecer.</p>
+</div>
+<div class="card">
+<h3>Un pedido para la IA en cada etapa del embudo</h3>
+<label for="etapa">Etapa</label>
+<select id="etapa" data-k="etapa"></select>
+<div class="prompt" id="pEtapa"></div>
+<div class="row"><button class="alt" data-copy="pEtapa">Copiar pedido</button></div>
+<p class="note">Si le falta contexto, pedile que te haga preguntas antes de responder.</p>
+</div>
+</div>
+<button class="next go" data-go="plan">Seguir con el tema 5</button>
+</section>
+
+<!-- TEMA 5 -->
+<section class="p" id="p-plan">
+<p class="tag">TEMA 5 · 100–120 MIN</p>
+<h2>Tu plan simple para el primer trimestre</h2>
+<p class="sub">Mejor tres objetivos cumplidos que diez anotados.</p>
+<div class="card">
+<table class="plan"><thead><tr><th>Objetivo</th><th>Acción</th><th>Métrica</th><th>Cuándo reviso</th></tr></thead>
+<tbody id="planBody"></tbody></table>
+<p class="note">Ejemplo: más pedidos por WhatsApp · anuncio que lleve al chat y respuestas rápidas · chats nuevos por semana · todos los lunes.</p>
+</div>
+<div class="card">
+<h3>Mi compromiso de 72 horas</h3>
+<label for="compromiso">Antes del sábado 28/11 voy a…</label>
+<input id="compromiso" data-k="compromiso" placeholder="Ej.: lanzar mi combo de fiestas por WhatsApp">
+</div>
+<button class="next go" data-go="enviar">Enviar mis respuestas</button>
+</section>
+
+<!-- ENVIAR -->
+<section class="p" id="p-enviar">
+<h2>Enviá tus respuestas y comentarios</h2>
+<p class="sub">Tus respuestas llegan a la capacitadora. Dejá también un comentario o una pregunta.</p>
+<div class="grid">
+<div class="card">
+<label for="comentario">Comentario sobre el encuentro</label>
+<textarea id="comentario" data-k="comentario" placeholder="¿Qué te sirvió más? ¿Qué te gustaría ver la próxima?"></textarea>
+<label for="pregunta">Una pregunta que te quedó</label>
+<textarea id="pregunta" data-k="pregunta" placeholder="Escribila acá"></textarea>
+</div>
+<div class="card">
+<h3>Resumen de lo que vas a enviar</h3>
+<div class="prompt" id="resumen"></div>
+<div class="row">
+<a class="btn wa" id="sendWa" href="https://wa.me/">Enviar por WhatsApp</a>
+<button class="alt" data-copy="resumen">Copiar</button>
+</div>
+<p class="note" id="sendMsg" aria-live="polite">Por WhatsApp elegís el grupo de la comunidad o el chat de la capacitadora.</p>
+</div>
+</div>
+</section>
+
+</main>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+{
+const $=s=>document.querySelector(s);
+const esc=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const S={};try{Object.assign(S,JSON.parse(localStorage.getItem('dolor25')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('dolor25',JSON.stringify(S))}catch(e){}};
+const toast=t=>{const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(()=>el.classList.remove('show'),2000)};
+
+const OPTS={
+kit:['Ficha del negocio','Propuesta de valor','Tres anuncios','Calendario de 10 días','Respuestas de WhatsApp','Plan de fidelización','Primera acción'],
+cambiar:['La imagen','El texto','El horario','La oferta','El público'],
+detector:['Gancho en 3 segundos','Oferta clara','Prueba real','Urgencia verdadera','Un solo llamado a la acción'],
+wa:['WhatsApp Business','WhatsApp común','No lo uso para vender'],
+caida:['No respondo a tiempo','No paso el precio','No hago seguimiento','No cobro en el chat'],
+waTiene:['Perfil y catálogo','Estados','Etiquetas','Listas de difusión','Bienvenida y respuestas rápidas','Cobro con link o QR'],
+fiestas:['Combo o regalo','Fecha límite de pedidos','Horarios especiales','Formas de pago y envío','Foto o video','Stock confirmado'],
+metaCamino:['Camino A: Promocionar desde Instagram','Camino B: Administrador de anuncios','Todavía no pauté'],
+metaTiene:['Objetivo definido','Oferta simple','Foto o video vertical','Quién responde y qué envía','Cuenta profesional','Página de Facebook vinculada'],
+auto:['Mensaje de bienvenida','Mensaje de ausencia','Respuestas rápidas','Etiquetas','Publicaciones programadas']};
+const ETAPAS=[['Atraer','Dame 5 ideas de reels de 15 segundos para {negocio} que muestren [diferenciador].'],['Interesar','Escribí las 8 preguntas que más me hacen mis clientes, con respuestas cortas.'],['Nutrir','Proponé 3 publicaciones que generen confianza: proceso, reseñas y detrás de escena.'],['Convertir','Redactá un mensaje para retomar a quien preguntó el precio y no respondió.'],['Fidelizar','Escribí un agradecimiento con un beneficio para la próxima compra.']];
+
+const CHANS=[
+{id:'Me',name:'Meta Ads',color:'#795c9e',como:'Anuncios pagos en Instagram y Facebook que llevan a tu perfil, tu web o tu WhatsApp.',costo:'Elegís un presupuesto. Pagás por mostrar el anuncio, venda o no.',sirve:'Llegar rápido a gente nueva de tu zona.',necesita:'Objetivo, oferta clara, foto o video y alguien que responda. Camino A desde Instagram o Camino B desde el Administrador de anuncios.',mide:'Mensajes o consultas por cada peso invertido.',ph:'Ej.: promocionar mi combo 5 días con destino WhatsApp',php:'Ej.: presupuesto diario'},
+{id:'Wa',name:'WhatsApp Business',color:'#15958f',como:'El chat como mostrador: catálogo, respuestas rápidas, etiquetas y cobro con link o QR.',costo:'La app es gratis. El costo es tu tiempo de respuesta.',sirve:'Convertir en venta a quien ya te escribe y hacerle seguimiento.',necesita:'Perfil completo, catálogo con precios, bienvenida, respuestas rápidas y etiquetas.',mide:'Chats nuevos por semana y ventas cerradas en el chat.',ph:'Ej.: cargar el catálogo y la bienvenida',php:'Ej.: 30 minutos por día'},
+{id:'Af',name:'Afiliados y referidos',color:'#df704f',como:'Otros recomiendan con un código propio y cobran solo si venden.',costo:'Comisión o beneficio, solo cuando hay venta.',sirve:'Llegar a públicos nuevos a través de la confianza de otros.',necesita:'Reglas por escrito, un código por afiliado y una planilla para registrar ventas.',mide:'Ventas con código por afiliado.',ph:'Ej.: darle un código a 3 clientas fieles',php:'Ej.: 10% de comisión'}];
+$('#chan').innerHTML=CHANS.map(c=>`<div class="col"><h3><span class="dot" style="background:${c.color}"></span>${esc(c.name)}</h3><dl><dt>Cómo vende</dt><dd>${esc(c.como)}</dd><dt>Cuánto cuesta</dt><dd>${esc(c.costo)}</dd><dt>Para qué sirve</dt><dd>${esc(c.sirve)}</dd><dt>Qué necesitás</dt><dd>${esc(c.necesita)}</dd><dt>Qué medir</dt><dd>${esc(c.mide)}</dd></dl>
+<div class="mine"><label for="ch${c.id}Uso">¿Lo usás hoy?</label><select id="ch${c.id}Uso" data-k="ch${c.id}Uso"><option value="">Elegí</option><option>Sí</option><option>A veces</option><option>No</option></select>
+<label for="ch${c.id}Paso">Mi primer paso</label><input id="ch${c.id}Paso" data-k="ch${c.id}Paso" placeholder="${esc(c.ph)}">
+<label for="ch${c.id}Pres">Inversión o beneficio</label><input id="ch${c.id}Pres" data-k="ch${c.id}Pres" placeholder="${esc(c.php)}">
+<label for="ch${c.id}Pri">Prioridad</label><select id="ch${c.id}Pri" data-k="ch${c.id}Pri"><option value="">Elegí</option><option value="1">1 · Arranco por acá</option><option value="2">2 · Después</option><option value="3">3 · Más adelante</option></select></div></div>`).join('');
+
+document.querySelectorAll('[data-multi],[data-one]').forEach(box=>{
+const k=box.dataset.multi||box.dataset.one,one=!!box.dataset.one;
+box.innerHTML=OPTS[k].map(o=>`<label class="chip"><input type="${one?'radio':'checkbox'}" name="${k}" value="${esc(o)}">${esc(o)}</label>`).join('');
+box.querySelectorAll('input').forEach(i=>{
+i.checked=one?S[k]===i.value:(S[k]||[]).includes(i.value);
+i.addEventListener('change',()=>{S[k]=one?i.value:[...box.querySelectorAll('input:checked')].map(x=>x.value);save();refresh()})})});
+
+$('#etapa').innerHTML=ETAPAS.map(e=>`<option>${e[0]}</option>`).join('');
+$('#planBody').innerHTML=[0,1,2].map(i=>`<tr>${['o','a','m','c'].map(f=>`<td><input data-k="plan${i}${f}" aria-label="Objetivo ${i+1}, ${({o:'objetivo',a:'acción',m:'métrica',c:'cuándo reviso'})[f]}"></td>`).join('')}</tr>`).join('');
+
+document.querySelectorAll('[data-k]').forEach(el=>{if(S[el.dataset.k]!=null)el.value=S[el.dataset.k];el.addEventListener('input',()=>{S[el.dataset.k]=el.value;save();refresh()})});
+if(!S.etapa)S.etapa=ETAPAS[0][0];$('#etapa').value=S.etapa;
+
+const neg=()=>S.negocio||'[mi negocio]',rub=()=>S.rubro||'[rubro]';
+const num=v=>{const n=parseFloat(String(v||'').replace(',','.'));return isFinite(n)?n:null};
+
+function resumen(){
+const L=[];L.push(`Encuentro 25/11 · ${S.negocio||'Sin nombre'}${S.rubro?' ('+S.rubro+')':''}`);
+if(S.probe)L.push(`1. Probé: ${S.probe}`);if(S.paso)L.push(`Qué pasó: ${S.paso}`);
+const a=num(S.alc),c=num(S.con),v=num(S.ven);if(a||c||v)L.push(`Embudo: me vieron ${a??'-'}, me escribieron ${c??'-'}, compraron ${v??'-'}`);
+if((S.cambiar||[]).length)L.push(`Cambiaría: ${S.cambiar.join(', ')}`);
+if(S.wa)L.push(`2. WhatsApp: ${S.wa}`);if((S.caida||[]).length)L.push(`Se me cae la gente en: ${S.caida.join(', ')}`);if(S.afiliado)L.push(`Posible afiliado: ${S.afiliado}`);
+if(S.metaCamino)L.push(`Meta Ads: ${S.metaCamino}`);if((S.metaTiene||[]).length)L.push(`Para pautar tengo: ${S.metaTiene.join(', ')}`);
+const pr=CHANS.filter(c=>S['ch'+c.id+'Pri']).sort((a,b)=>S['ch'+a.id+'Pri']-S['ch'+b.id+'Pri']);if(pr.length)L.push(`Prioridades de venta: ${pr.map(c=>S['ch'+c.id+'Pri']+'. '+c.name+(S['ch'+c.id+'Paso']?' ('+S['ch'+c.id+'Paso']+')':'')).join(' · ')}`);
+if((S.fiestas||[]).length)L.push(`3. Fiestas listo: ${S.fiestas.length}/6 (${S.fiestas.join(', ')})`);if(S.combo)L.push(`Combo: ${S.combo}`);if(S.limite)L.push(`Fecha límite: ${S.limite}`);
+if(S.desafio)L.push(`Ruleta: ${S.desafio}`);
+if((S.auto||[]).length)L.push(`4. Activé: ${S.auto.join(', ')}`);
+const objs=[0,1,2].map(i=>S['plan'+i+'o']).filter(Boolean);if(objs.length)L.push(`5. Objetivos 2027: ${objs.join(' · ')}`);
+if(S.compromiso)L.push(`Compromiso 72 h: ${S.compromiso}`);
+if(S.comentario)L.push(`Comentario: ${S.comentario}`);if(S.pregunta)L.push(`Pregunta: ${S.pregunta}`);
+return L.join('\n')}
+
+function refresh(){
+const a=num(S.alc),c=num(S.con);$('#embudo').textContent=a&&c!=null?`De cada 100 que te ven, ${(c/a*100).toFixed(1).replace('.0','')} te escriben. Esa es la cifra a mejorar.`:'Completá los números para ver cuántos te escriben de cada 100 que te ven.';
+const d=(S.detector||[]).length;$('#detScore').textContent=d+'/5';$('#detMsg').textContent=d>=4?'Lista para pautar':d>=2?'Le faltan piezas':'Así no conviene invertir';
+const f=(S.fiestas||[]).length;$('#semScore').textContent=f+'/6';$('#semMsg').textContent=f>=5?'Verde: listo para lanzar':f>=3?'Amarillo: falta terminar':'Rojo: trabajalo hoy en el laboratorio';
+$('#pAjustar').textContent=`Actuá como especialista en marketing para pequeños comercios. Tengo ${rub()} en Tres Arroyos. Publiqué este ${S.probe?S.probe.toLowerCase().replace(/^un[a]? /,''):'[anuncio / mensaje]'}: ${S.pieza||'[pegá el texto]'}. El resultado fue: ${S.paso||'[datos reales]'}. Mi objetivo era ${S.objetivo||'[objetivo]'}. Decime qué pudo fallar y proponé 3 versiones mejoradas, explicando qué cambiaste en cada una.`;
+$('#pAfiliados').textContent=`Redactá las reglas de un programa de afiliados simple para ${neg()} (${rub()}), con ${S.beneficio||'[comisión o beneficio]'} por cada venta. Incluí: qué productos entran, cuándo y cómo se paga, cómo se registra cada venta en una planilla y qué puede prometer el afiliado y qué no.`;
+$('#pFiestas').textContent=`Con el kit que armamos para ${neg()}, creá una campaña de fiestas para diciembre: 1) una oferta o combo de regalo${S.combo?' (mi idea: '+S.combo+')':''}, 2) tres anuncios: Navidad, Año Nuevo y último momento, 3) un calendario de 10 días, 4) un mensaje de WhatsApp con la fecha límite de pedidos${S.limite?' ('+S.limite+')':''}. Usá [corchetes] para los datos que tengo que confirmar.`;
+$('#pMeta').textContent=`Actuá como especialista en Meta Ads para pequeños comercios. Tengo ${neg()} (${rub()}) en Tres Arroyos. Quiero un anuncio para Instagram y Facebook con destino WhatsApp${S.combo?' para vender: '+S.combo:''}. Mi presupuesto para probar es ${S.metaPres||'[presupuesto]'}. Dame: 1) el objetivo de campaña que conviene, 2) el público (zona, edad e intereses), 3) tres textos cortos con gancho, oferta y llamado a la acción, 4) la idea de imagen o video vertical, 5) el primer mensaje que respondo cuando escriben. No inventes precios ni condiciones.`;
+const pris=CHANS.map(c=>S['ch'+c.id+'Pri']).filter(Boolean);$('#chanMsg').textContent=new Set(pris).size<pris.length?'Usaste la misma prioridad en más de un canal: elegí 1, 2 y 3 distintos.':'';
+const e=ETAPAS.find(x=>x[0]===S.etapa)||ETAPAS[0];$('#pEtapa').textContent=e[1].replace('{negocio}',neg());
+$('#resumen').textContent=resumen();
+$('#sendWa').href='https://wa.me/?text='+encodeURIComponent(resumen());
+}
+
+document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('#'+b.dataset.copy).textContent);toast('Copiado')}catch(e){toast('Mantené apretado el texto para copiarlo')}}));
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>{location.hash=b.dataset.go;scrollTo(0,0)}));
+
+/* ---- Ruleta (de ruleta_de_prompts_impulsa.html) ---- */
+const items=[
+["Desafío anuncio x3","Creá 3 versiones del anuncio: una emocional, una directa y una centrada en el beneficio.","#15958f"],
+["Reel 15 s","Pensá un reel vertical de 15 segundos con gancho inicial, 3 escenas y cierre con llamado a la acción.","#efa735"],
+["Oferta","Convertí el producto en una oferta clara: beneficio, valor, urgencia real y condiciones transparentes.","#df704f"],
+["WhatsApp","Escribí un mensaje breve y cercano para enviar por WhatsApp, sin sonar invasivo.","#795c9e"],
+["Guía regalos","Presentá el producto como una idea de regalo: para quién es, por qué sorprende y cómo pedirlo.","#12243e"],
+["Historias","Armá una secuencia de 3 historias: captar atención, mostrar valor y cerrar con una acción.","#2bb2a6"],
+["Objeciones","Anticipá 3 dudas frecuentes y respondelas con claridad, empatía y datos concretos.","#15958f"],
+["Detector","Detectá el problema o deseo que resuelve el producto y transformalo en un mensaje atractivo.","#efa735"],
+["Cumpleaños","Creá una comunicación cálida para cumpleaños o aniversario, con un motivo para elegir la marca.","#df704f"],
+["Reseñas","Diseñá una publicación que aproveche una reseña real de un cliente, sin inventar testimonios.","#795c9e"],
+["Comodín","Inventá una idea creativa y simple para llamar la atención del público de este negocio.","#12243e"]];
+const canvas=$('#wheel'),ctx=canvas.getContext('2d'),cx=350,cy=350,r=320,n=items.length,arc=2*Math.PI/n;
+let rotation=0,spinning=false,selected=items.find(i=>i[0]===S.desafio)||null;
+function draw(){ctx.clearRect(0,0,700,700);items.forEach((it,i)=>{const a=rotation+i*arc-Math.PI/2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,a,a+arc);ctx.closePath();ctx.fillStyle=it[2];ctx.fill();ctx.strokeStyle="#fff";ctx.lineWidth=4;ctx.stroke();ctx.save();ctx.translate(cx,cy);ctx.rotate(a+arc/2);ctx.textAlign="right";ctx.fillStyle="#fff";ctx.font="bold 21px Arial";const words=it[0].split(" ");const lines=[];let line="";words.forEach(w=>{if((line+" "+w).trim().length>17){lines.push(line);line=w}else line=(line+" "+w).trim()});lines.push(line);lines.forEach((s,j)=>ctx.fillText(s,r-26,(j-(lines.length-1)/2)*24+7));ctx.restore()});ctx.beginPath();ctx.arc(cx,cy,66,0,2*Math.PI);ctx.fillStyle="#f8f6f0";ctx.fill();ctx.strokeStyle="#fff";ctx.lineWidth=5;ctx.stroke();ctx.fillStyle="#12243e";ctx.textAlign="center";ctx.font="bold 18px Arial";ctx.fillText("¡VAMOS!",cx,cy+6)}
+draw();
+const showPick=()=>{if(!selected)return;$('#picked').textContent=selected[0];$('#task').textContent=selected[1]};showPick();
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+$('#spin').addEventListener('click',()=>{if(spinning)return;spinning=true;$('#spin').disabled=true;const start=rotation,extra=Math.PI*2*(5+Math.random()*4)+Math.random()*Math.PI*2,duration=reduce?1:4200,t0=performance.now();
+function frame(now){const p=Math.min(1,(now-t0)/duration),ease=1-Math.pow(1-p,4);rotation=start+extra*ease;draw();if(p<1)requestAnimationFrame(frame);else{spinning=false;$('#spin').disabled=false;const angle=((-rotation)%(Math.PI*2)+Math.PI*2)%(Math.PI*2);selected=items[Math.floor(angle/arc)%n];S.desafio=selected[0];save();showPick();$('#pRuleta').hidden=true;$('#rCopy').hidden=true;$('#rMsg').textContent='';refresh();toast('Te tocó: '+selected[0])}}
+requestAnimationFrame(frame)});
+const v=k=>(S[k]||'').trim()||'No especificado';
+$('#make').addEventListener('click',()=>{if(!selected){$('#rMsg').textContent='Primero girá la ruleta para obtener un desafío.';return}
+$('#rMsg').textContent='';const p=$('#pRuleta');
+p.textContent=`Actuá como especialista en marketing para pequeños negocios de Argentina. Creá una pieza publicitaria clara, atractiva y cercana.\n\nMI KIT:\n- Negocio: ${v('negocio')}\n- Producto/servicio: ${v('rProd')}\n- Fecha o motivo: ${v('rFecha')}\n- Cliente ideal: ${v('cliente')}\n- Beneficio diferencial: ${v('rBen')}\n- Precio/oferta: ${v('rOferta')}\n- Llamado a la acción: ${v('rCta')}\n\nDESAFÍO: ${selected[0]}\nCONSIGNA: ${selected[1]}\n\nENTREGABLE:\n1. Texto del anuncio con gancho, beneficio y llamado a la acción.\n2. Idea visual concreta para una imagen o video (formato, escena, colores y texto en pantalla).\n3. Una versión breve para redes sociales.\n4. Indicá qué dato falta si necesitás precisión. No inventes precios, stock, reseñas ni condiciones. Usá español rioplatense natural y evitá frases exageradas.`;
+p.hidden=false;$('#rCopy').hidden=false});
+
+/* ---- Navegación ---- */
+const VIEWS=['inicio','compartir','vender','fiestas','ruleta','automatizar','plan','enviar'];
+const route=()=>{const h=location.hash.slice(1),cur=VIEWS.includes(h)?h:'inicio';VIEWS.forEach(x=>$('#p-'+x).classList.toggle('on',x===cur));document.querySelectorAll('nav a').forEach(a=>a.setAttribute('aria-current',a.getAttribute('href')==='#'+cur))};
+addEventListener('hashchange',route);route();refresh();
+
+
+}
+</script>
+</body>
+</html>
